@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{Collecting metrics of the puma web server.}
   spec.description   = %q{Extends Yabeda metrics with puma web server values by using puma plugin}
-  spec.homepage      = "http://github.com/dsalahutdinov/yabeda-puma"
+  spec.homepage      = "http://github.com/yabeda-rb/yabeda-puma"
   spec.license       = "MIT"
 
   spec.files         = Dir.chdir(File.expand_path('..', __FILE__)) do
