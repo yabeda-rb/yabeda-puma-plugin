@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'yabeda/puma/statistics/parser'
+require 'yabeda/puma/plugin/statistics/parser'
 
-RSpec.describe Yabeda::Puma::Statistics::Parser do
+RSpec.describe Yabeda::Puma::Plugin::Statistics::Parser do
 
   describe '#parse' do
     subject(:statistics) { described_class.new(clustered: clustered, data: data).call }

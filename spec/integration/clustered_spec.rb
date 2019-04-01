@@ -6,13 +6,8 @@ require "puma/events"
 require "puma/detect"
 require "puma/cli"
 require 'rack'
-require 'byebug'
 
-RSpec.describe Yabeda::Puma do
-#  it "has a version number" do
-#    expect(Yabeda::Puma::VERSION).not_to be nil
-#  end
-  #
+RSpec.describe Yabeda::Puma::Plugin do
   def next_port(incr = 1)
     @next_port = 9000 if @next_port == nil
     @next_port += incr

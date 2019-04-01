@@ -1,6 +1,5 @@
 require "bundler/setup"
-require "yabeda/puma"
-require 'byebug'
+require "yabeda/puma/plugin"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

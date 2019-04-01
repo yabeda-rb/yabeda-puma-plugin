@@ -1,4 +1,4 @@
-require 'yabeda/puma.rb'
+require 'yabeda/puma/plugin.rb'
 
 Puma::Plugin.create do
   def start(launcher)
@@ -7,7 +7,7 @@ Puma::Plugin.create do
     control_url = launcher.options[:control_url]
     raise StandardError, "Puma control app is not activated" if control_url == nil
 
-    Yabeda::Puma.tap do |puma|
+    Yabeda::Puma::Plugin.tap do |puma|
       puma.control_url = control_url
       puma.control_auth_token = launcher.options[:control_auth_token]
     end
@@ -27,10 +27,10 @@ Puma::Plugin.create do
       end
 
       collect do
-        require 'yabeda/puma/statistics/fetcher'
-        stats = Yabeda::Puma::Statistics::Fetcher.call
-        require 'yabeda/puma/statistics/parser'
-        Yabeda::Puma::Statistics::Parser.new(clustered: clustered, data: stats).call.each do |item|
+        require 'yabeda/puma/plugin/statistics/fetcher'
+        stats = Yabeda::Puma::Plugin::Statistics::Fetcher.call
+        require 'yabeda/puma/plugin/statistics/parser'
+        Yabeda::Puma::Plugin::Statistics::Parser.new(clustered: clustered, data: stats).call.each do |item|
           send("puma_#{item[:name]}").set(item[:labels], item[:value])
         end
       end

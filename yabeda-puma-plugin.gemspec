@@ -1,17 +1,17 @@
 
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "yabeda/puma/version"
+require "yabeda/puma/plugin/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "yabeda-puma"
-  spec.version       = Yabeda::Puma::VERSION
+  spec.name          = "yabeda-puma-plugin"
+  spec.version       = Yabeda::Puma::Plugin::VERSION
   spec.authors       = ["Salahutdinov Dmitry"]
   spec.email         = ["dsalahutdinov@gmail.com"]
 
-  spec.summary       = %q{Collecting metrics of the puma web server.}
+  spec.summary       = %q{Puma web server plugin for collecting puma metrics with Yabeda framework.}
   spec.description   = %q{Extends Yabeda metrics with puma web server values by using puma plugin}
-  spec.homepage      = "http://github.com/yabeda-rb/yabeda-puma"
+  spec.homepage      = "http://github.com/yabeda-rb/yabeda-puma-plugin"
   spec.license       = "MIT"
 
   spec.files         = Dir.chdir(File.expand_path('..', __FILE__)) do
@@ -28,6 +28,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
-  spec.add_development_dependency "byebug"
   spec.add_development_dependency "rack"
 end
