@@ -44,7 +44,10 @@ It will activate default puma control application working over the unix socket, 
 ## Details
 
 In accordance with the [architecture](https://github.com/puma/puma/blob/master/docs/architecture.md) of the puma web server lets look how it works:
+
 ![Yabeda::Puma get metrics from puma control app over the unix socket](docs/diagram.png).
+
+
 For the configuration above, we will have the list of metrics (with help of `yabeda-prometheus` exporter):
 ```
 GET /metrics
