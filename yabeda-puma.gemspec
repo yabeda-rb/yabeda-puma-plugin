@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["dsalahutdinov@gmail.com"]
 
   spec.summary       = %q{Collecting metrics of the puma web server.}
-  spec.description   = %q{Collects puma web server metrics.}
+  spec.description   = %q{Extends Yabeda metrics with puma web server values by using puma plugin}
   spec.homepage      = "http://github.com/dsalahutdinov/yabeda-puma"
   spec.license       = "MIT"
 
@@ -25,7 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "puma"
   spec.add_runtime_dependency "json"
 
-  spec.add_development_dependency "bundler", "~> 2.0"
+  spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "byebug"
