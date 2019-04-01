@@ -65,6 +65,11 @@ puma_booted_workers 2
 puma_old_workers 0
 ```
 
+See also the grafana screenshot of monitoring puma pool size and it's capacity when application is overloaded:
+
+![Monitor puma metrics with grafana](docs/grafana.png).
+
+
 ## Roadmap (TODO or Help wanted)
 
 - Collect also `control-gc` puma metrics
