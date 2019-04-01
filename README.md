@@ -1,8 +1,23 @@
+<a href="https://amplifr.com/?utm_source=uibook">
+  <img width="100" height="140" align="right"
+    alt="Sponsored by Amplifr" src="https://amplifr-direct.s3-eu-west-1.amazonaws.com/social_images/image/37b580d9-3668-4005-8d5a-137de3a3e77c.png" />
+</a>
+
 # Yabeda::Puma
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/yabeda/puma`. To experiment with that code, run `bin/console` for an interactive prompt.
+Built-in metrics for [Puma](https://github.com/puma/puma) web server monitoring out of the box! Part of the [yabeda](https://github.com/yabeda-rb/yabeda) suite.
 
-TODO: Delete this and the text above, and describe your gem
+## Metrics
+
+Works as the Puma plugin and provides following metrics:
+ - `puma_workers` - the number of running puma workers
+ - `puma_booted_workers` - the number of booted puma workers
+ - `puma_old_workers` - the number of old puma worker
+
+ - `puma_pool_capacity` - the capacity of each worker (segmented by the worker number)
+ - `puma_running` - the number of running thread for any puma worker (segmented by the worker number)
+ - `puma_max_threads` - the maximum number of worker threads (segmented by the worker number)
+ - `puma_backlog` - the number of backlog threads (segmented by the worker number)
 
 ## Installation
 
@@ -16,19 +31,26 @@ And then execute:
 
     $ bundle
 
-Or install it yourself as:
-
-    $ gem install yabeda-puma
-
 ## Usage
 
-TODO: Write usage instructions here
+Add those 2 lines of code to your `config/puma.rb` file:
+```ruby
+activate_control_app
+plugin :yabeda
+```
+It will activate default puma control application working over the unix socket, and runs the `yabeda` puma plugin, for registering and collecting the metrics.
 
-## Development
+## Roadmap (TODO or Help wanted)
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+- Collect also `control-gc` puma metrics
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+## Development with Docker
+
+Get local development environment working and tests running is very easy with docker-compose:
+```bash
+docker-compose run app bundle
+docker-compose run app bundle exec rspec
+```
 
 ## Contributing
 
