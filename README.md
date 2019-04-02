@@ -84,7 +84,7 @@ docker-compose run app bundle exec rspec
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/yabeda-puma.
+Bug reports and pull requests are welcome on GitHub at https://github.com/yabeda-rb/yabeda-puma-plugin.
 
 ## License
 
