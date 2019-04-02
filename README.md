@@ -1,4 +1,4 @@
-<a href="https://amplifr.com/?utm_source=uibook">
+<a href="https://amplifr.com/?utm_source=yabeda-puma-plugin">
   <img width="100" height="140" align="right"
     alt="Sponsored by Amplifr" src="https://amplifr-direct.s3-eu-west-1.amazonaws.com/social_images/image/37b580d9-3668-4005-8d5a-137de3a3e77c.png" />
 </a>
@@ -14,7 +14,7 @@ Works as the Puma plugin and provides following metrics:
  - `puma_booted_workers` - the number of booted puma workers
  - `puma_old_workers` - the number of old puma worker
 
-Segmented by the worker:
+Segmented by the worker (index of the worker):
  - `puma_pool_capacity` - the capacity of each worker: the number of requests that the server is capable of taking right now. More details are [here](https://github.com/puma/puma/blob/0f8b10737e36fc24cdd572f76a739659b5fad9cb/lib/puma/server.rb#L167).
  - `puma_running` - the number of running threads (spawned threads) for any puma worker
  - `puma_max_threads` - preconfigured maximum number of worker threads
