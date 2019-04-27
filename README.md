@@ -25,7 +25,7 @@ Segmented by the worker (index of the worker):
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'yabeda-puma'
+gem 'yabeda-puma-plugin'
 ```
 
 And then execute:
