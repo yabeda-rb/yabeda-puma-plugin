@@ -13,21 +13,33 @@ module Yabeda
           end
 
           def call
-            Array.new.tap { |result| parse(data, result) }
+            [].tap { |result| parse(data, {}, result) }
           end
 
           private
 
-          def parse(stats, labels = {}, result)
+          def parse(stats, labels, result)
             stats.each do |key, value|
-              value.each { |s| parse(s, labels.merge(index: s['index']), result) } if key == 'worker_status'
-              parse(value, labels, result) if key == 'last_status'
-              result << {name: key, value: value, labels: labels} if metric?(key)
+              case key
+              when 'worker_status'
+                value.each { |s| parse(s, labels.merge(index: s['index']), result) }
+              when 'last_status'
+                parse(value, labels, result)
+              else
+                next unless metric?(key)
+
+                l = clustered_metric?(key) ? labels : { index: 0 }.merge(labels)
+                result << { name: key, value: value, labels: l }
+              end
             end
           end
 
           def metric?(name)
-            Statistics::METRICS.include?(name.to_sym) || (Statistics::CLUSTERED_METRICS.include?(name.to_sym) && clustered)
+            Statistics::METRICS.include?(name.to_sym) || clustered_metric?(name)
+          end
+
+          def clustered_metric?(name)
+            clustered && Statistics::CLUSTERED_METRICS.include?(name.to_sym)
           end
         end
       end

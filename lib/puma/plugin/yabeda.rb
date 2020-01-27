@@ -14,14 +14,14 @@ Puma::Plugin.create do
 
     Yabeda.configure do
       group :puma
-      
-      gauge :backlog, comment: 'Number of established but unaccepted connections in the backlog'
-      gauge :running, comment: 'Number of running worker threads'
-      gauge :pool_capacity, comment: 'Number of allocatable worker threads'
-      gauge :max_threads, comment: 'Maximum number of worker threads'
-      gauge :workers, comment: 'Number of configured workers'
+
+      gauge :backlog, tags: %i[index], comment: 'Number of established but unaccepted connections in the backlog'
+      gauge :running, tags: %i[index], comment: 'Number of running worker threads'
+      gauge :pool_capacity, tags: %i[index], comment: 'Number of allocatable worker threads'
+      gauge :max_threads, tags: %i[index], comment: 'Maximum number of worker threads'
 
       if clustered
+        gauge :workers, comment: 'Number of configured workers'
         gauge :booted_workers, comment: 'Number of booted workers'
         gauge :old_workers, comment: 'Number of old workers'
       end

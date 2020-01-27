@@ -56,10 +56,10 @@ RSpec.describe Yabeda::Puma::Plugin::Statistics::Parser do
       it do
         expect(statistics).to match_array(
           [
-            { name: 'backlog', labels: {}, value: 0 },
-            { name: 'running', labels: {}, value: 5 },
-            { name: 'pool_capacity', labels: {}, value: 4 },
-            { name: 'max_threads', labels: {}, value: 5 }
+            { name: 'backlog', labels: {index: 0}, value: 0 },
+            { name: 'running', labels: {index: 0}, value: 5 },
+            { name: 'pool_capacity', labels: {index: 0}, value: 4 },
+            { name: 'max_threads', labels: {index: 0}, value: 5 }
           ]
         )
       end
