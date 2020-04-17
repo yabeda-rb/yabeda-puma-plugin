@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'yabeda/prometheus/exporter'
-require 'puma/plugin'
 
 Puma::Plugin.create do
   # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
