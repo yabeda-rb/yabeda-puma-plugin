@@ -9,7 +9,7 @@ Puma::Plugin.create do
     events = launcher.events
 
     host = options[:prometheus_host] || ENV['PROMETHEUS_EXPORTER_BIND'] || '0.0.0.0'
-    port = options[:prometheus_port] || ENV['PROMETHEUS_EXPORTER_PORT'] || 9393
+    port = options[:prometheus_port] || ENV['PROMETHEUS_EXPORTER_PORT'] || 9394
 
     app = Yabeda::Prometheus::Exporter.rack_app
 
