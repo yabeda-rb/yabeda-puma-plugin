@@ -34,12 +34,60 @@ And then execute:
 
 ## Usage
 
+### Collecting metrics
+
 Add those 2 lines of code to your `config/puma.rb` file:
 ```ruby
 activate_control_app
 plugin :yabeda
 ```
 It will activate default puma control application working over the unix socket, and runs the `yabeda` puma plugin, for registering and collecting the metrics.
+
+### Exposing metrics
+
+Some monitoring system agents (like NewRelic or DataDog) will send metrics automatically in the background. But for some of monitoring systems (like Prometheus) you have to explicitly set up metrics export.
+
+#### Prometheus
+
+##### On the same endpoint with your application
+
+For non-Rails applications place following line in your `config.ru` _before_ running your application:
+
+```ruby
+use Yabeda::Prometheus::Exporter, path: "/metrics"
+```
+
+In Ruby on Rails applications you can add following line in `config/routes.rb` instead:
+
+```ruby
+mount Yabeda::Prometheus::Exporter => "/metrics"
+```
+
+In both cases your Puma instance metrics (along with your application metrics) will be available at `/metrics` endpoint.
+
+##### On different port
+
+Sometimes you don't want to expose metrics publicly for security reasons. For that case prometheus exporter plugin is bundled with this gem.
+
+Don't forget to add either `yabeda-prometheus` or `yabeda-prometheus-mmap` gem into your `Gemfile`!
+
+Add this plugin into your `config/puma.rb`:
+
+```ruby
+plugin :yabeda_prometheus
+```
+
+By default metrics will be available at `http://0.0.0.0:9394/metrics`.
+
+Bind host, port, and path can be controlled either by config file option `prometheus_exporter_url`:
+
+```ruby
+# config/puma.rb
+prometheus_exporter_url "tcp://127.0.0.1:9395/shmetrics"
+```
+
+Or by environment variables `PROMETHEUS_EXPORTER_URL`, `PROMETHEUS_EXPORTER_BIND`, `PROMETHEUS_EXPORTER_PORT`, and `PROMETHEUS_EXPORTER_PATH` (takes precedence over configuration option).
+
 
 ## Details
 
