@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 0.6.0 - 2021-02-05
+
+### Changed
+
+- “Most recent” aggregation mode specified for all gauge metrics. [@botimer], [#16](https://github.com/yabeda-rb/yabeda-puma-plugin/pull/16)
+
 ## 0.5.0 - 2020-11-13
 
 ### Changed
@@ -39,6 +45,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 Initial release with basic metrics collection. [@dsalahutdinov]
 
+[@botimer]: https://github.com/botimer "Noah Botimer"
 [@jwhitcraft]: https://github.com/jwhitcraft "Jon Whitcraft"
 [@Neznauy]: https://github.com/Neznauy "Aleksandr Shlyakov"
 [@Envek]: https://github.com/Envek "Andrey Novikov"
