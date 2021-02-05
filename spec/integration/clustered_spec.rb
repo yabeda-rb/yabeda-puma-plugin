@@ -38,6 +38,7 @@ RSpec.describe Yabeda::Puma::Plugin do
 
       t = Thread.new do
         Thread.current.abort_on_exception = true
+        Yabeda.configure!
         cli.run
       end
 
