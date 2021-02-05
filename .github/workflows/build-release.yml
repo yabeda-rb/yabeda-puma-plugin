@@ -31,10 +31,16 @@ jobs:
           BODY="${BODY//$'\n'/'%0A'}"
           BODY="${BODY//$'\r'/'%0D'}"
           echo "::set-output name=body::$BODY"
+          # Add pre-release option if tag name has any suffix after vMAJOR.MINOR.PATCH
+          if [[ ${GITHUB_REF#refs/tags/} =~ ^v[0-9]+\.[0-9]+\.[0-9]+.+ ]]; then
+            echo ::set-output name=prerelease::true
+          fi
       - name: Build gem
         run: gem build
+      - name: Calculate checksums
+        run: sha256sum yabeda-puma-plugin-${{ steps.tag.outputs.version }}.gem > SHA256SUM
       - name: Check version
-        run: ls yabeda-puma-plugin-${{ steps.tag.outputs.version }}.gem
+        run: ls -l yabeda-puma-plugin-${{ steps.tag.outputs.version }}.gem
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -45,9 +51,8 @@ jobs:
           release_name: ${{ steps.tag.outputs.subject }}
           body: ${{ steps.tag.outputs.body }}
           draft: false
-          prerelease: false
-      - name: Upload Release Asset
-        id: upload-release-asset
+          prerelease: ${{ steps.tag.outputs.prerelease }}
+      - name: Upload built gem as release asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -56,3 +61,22 @@ jobs:
           asset_path: yabeda-puma-plugin-${{ steps.tag.outputs.version }}.gem
           asset_name: yabeda-puma-plugin-${{ steps.tag.outputs.version }}.gem
           asset_content_type: application/x-tar
+      - name: Upload checksums as release asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: SHA256SUM
+          asset_name: SHA256SUM
+          asset_content_type: text/plain
+      - name: Publish to GitHub packages
+        env:
+          GEM_HOST_API_KEY: Bearer ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gem push yabeda-puma-plugin-${{ steps.tag.outputs.version }}.gem --host https://rubygems.pkg.github.com/${{ github.repository_owner }}
+      - name: Publish to RubyGems
+        env:
+          GEM_HOST_API_KEY: "${{ secrets.RUBYGEMS_API_KEY }}"
+        run: |
+          gem push yabeda-puma-plugin-${{ steps.tag.outputs.version }}.gem
