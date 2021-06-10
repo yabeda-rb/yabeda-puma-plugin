@@ -3,7 +3,7 @@
     alt="Sponsored by Amplifr" src="https://amplifr-direct.s3-eu-west-1.amazonaws.com/social_images/image/37b580d9-3668-4005-8d5a-137de3a3e77c.png" />
 </a>
 
-# Yabeda::Puma::Plugin
+# ![`Yabeda::Puma::Plugin`](./yabeda-puma-plugin-logo.png)
 
 Built-in metrics for [Puma](https://github.com/puma/puma) web server monitoring out of the box! Part of the [yabeda](https://github.com/yabeda-rb/yabeda) suite.
 
