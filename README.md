@@ -43,6 +43,8 @@ plugin :yabeda
 ```
 It will activate default puma control application working over the unix socket, and runs the `yabeda` puma plugin, for registering and collecting the metrics.
 
+Don't forget to add `Yabeda.configure!`. More information  [yabeda usage](https://github.com/yabeda-rb/yabeda#usage)
+
 ### Exposing metrics
 
 Some monitoring system agents (like NewRelic or DataDog) will send metrics automatically in the background. But for some of monitoring systems (like Prometheus) you have to explicitly set up metrics export.
