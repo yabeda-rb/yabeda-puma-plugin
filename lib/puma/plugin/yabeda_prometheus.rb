@@ -32,7 +32,16 @@ Puma::Plugin.create do
 
       metrics = Puma::Server.new app, events, min_threads: 0, max_threads: 1
 
-      metrics.log_writer.log "* Starting Yabeda Prometheus metrics exporter on http://#{host}:#{port}#{path}"
+      if metrics.respond_to?(:min_threads=)
+        metrics.min_threads = 0
+        metrics.max_threads = 1
+      end
+
+      if metrics.respond_to?(:log_writer)
+        metrics.log_writer.log "* Starting Yabeda Prometheus metrics exporter on http://#{host}:#{port}#{path}"
+      else
+        events.log "* Starting Yabeda Prometheus metrics exporter on http://#{host}:#{port}#{path}"
+      end
 
       metrics.add_tcp_listener host, port
 
