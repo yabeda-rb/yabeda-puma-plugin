@@ -1,5 +1,8 @@
 require "net/http"
 
+# on_stopped hook was added in Puma 5.1 in https://github.com/puma/puma/commit/288a4cf756852a4837c77ee70d7fdcca1edb8e82
+return if Gem::Version.new(Puma::Const::PUMA_VERSION) < Gem::Version.new("5.1")
+
 RSpec.describe "Standalone Prometheus Exporter" do
   before(:each) do
     cmd = <<~EOF

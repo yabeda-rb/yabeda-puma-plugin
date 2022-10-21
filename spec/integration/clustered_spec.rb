@@ -16,7 +16,13 @@ RSpec.describe Yabeda::Puma::Plugin do
   before(:each) do
     @wait, @ready = IO.pipe
 
-    @events = Puma::Events.strings
+    if defined? Puma::LogWriter
+      @events = Puma::Events.new
+      @log_writer = Puma::LogWriter.strings
+    else
+      @events = Puma::Events.strings
+    end
+
     @events.on_booted { @ready << "!" }
   end
 
@@ -34,7 +40,7 @@ RSpec.describe Yabeda::Puma::Plugin do
     it do
       cli = Puma::CLI.new ["-b", "tcp://127.0.0.1:#{port}",
                            "-C", "spec/configs/puma.rb",
-                           "spec/configs/lobster.ru"], @events
+                           "spec/configs/lobster.ru"], *[@log_writer, @events].compact
 
       t = Thread.new do
         Thread.current.abort_on_exception = true
