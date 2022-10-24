@@ -43,7 +43,16 @@ plugin :yabeda
 ```
 It will activate default puma control application working over the unix socket, and runs the `yabeda` puma plugin, for registering and collecting the metrics.
 
-Don't forget to add `Yabeda.configure!`. More information  [yabeda usage](https://github.com/yabeda-rb/yabeda#usage)
+> **Note**
+>
+> In case if you're **not** using Rails, don't forget configure Yabeda manually either in your app initialization or in Puma configuration hook:
+> ```ruby
+> # config/puma.rb
+> before_fork do
+>   Yabeda.configure!
+> end
+> ```
+> See [yabeda usage](https://github.com/yabeda-rb/yabeda#usage) for more information.
 
 ### Exposing metrics
 
