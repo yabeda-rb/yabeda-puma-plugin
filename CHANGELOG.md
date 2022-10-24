@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 0.7.0 - 2022-10-24
+
+### Added
+
+ - Puma 6.x support for `yabeda_prometheus` plugin. [@ollym][], [#25](https://github.com/yabeda-rb/yabeda-puma-plugin/pull/25)
+ - Support phased restarts with standalone Prometheus exporter. [@botimer][], [#23](https://github.com/yabeda-rb/yabeda-puma-plugin/pull/23)
+ - `on_prometheus_exporter_boot` hook in Puma config DSL. [@Envek][]
+
 ## 0.6.0 - 2021-02-05
 
 ### Changed
@@ -45,6 +53,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 Initial release with basic metrics collection. [@dsalahutdinov]
 
+[@ollym]: https://github.com/ollym "Oliver Morgan"
 [@botimer]: https://github.com/botimer "Noah Botimer"
 [@jwhitcraft]: https://github.com/jwhitcraft "Jon Whitcraft"
 [@Neznauy]: https://github.com/Neznauy "Aleksandr Shlyakov"
