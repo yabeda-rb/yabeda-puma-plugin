@@ -27,31 +27,44 @@ Puma::Plugin.create do
     port = Integer(ENV.fetch('PROMETHEUS_EXPORTER_PORT', uri.port))
     path = ENV.fetch('PROMETHEUS_EXPORTER_PATH', uri.path)
 
-    events.on_booted do
+    server = nil
+    logger = events
+    banner = "Yabeda Prometheus metrics exporter on http://#{host}:#{port}#{path}"
+
+    create_server = -> {
       app = Yabeda::Prometheus::Exporter.rack_app(Yabeda::Prometheus::Exporter, path: path)
+      server = Puma::Server.new app, events, min_threads: 0, max_threads: 1
+      logger = server.respond_to?(:log_writer) ? server.log_writer : events
 
-      metrics = Puma::Server.new app, events, min_threads: 0, max_threads: 1
-
-      if metrics.respond_to?(:min_threads=)
-        metrics.min_threads = 0
-        metrics.max_threads = 1
+      server.add_tcp_listener host, port
+      if server.respond_to?(:min_threads=)
+        server.min_threads = 0
+        server.max_threads = 1
       end
 
-      if metrics.respond_to?(:log_writer)
-        metrics.log_writer.log "* Starting Yabeda Prometheus metrics exporter on http://#{host}:#{port}#{path}"
-      else
-        events.log "* Starting Yabeda Prometheus metrics exporter on http://#{host}:#{port}#{path}"
+      [server, logger]
+    }
+
+    events.on_booted do
+      unless server&.running
+        server, logger = create_server.call
+        logger.log "* Starting #{banner}"
+        server.run
       end
+    end
 
-      metrics.add_tcp_listener host, port
-
-      events.register(:state) do |state|
-        if %i[halt restart stop].include?(state)
-          metrics.stop(true) unless metrics.shutting_down?
-        end
+    events.on_stopped do
+      unless server&.shutting_down?
+        logger.log "* Stopping #{banner}"
+        server.stop(true)
       end
+    end
 
-      metrics.run
+    events.on_restart do
+      logger.log "* Restarting #{banner}"
+      server.stop(true)
+      server, logger = create_server.call
+      server.run
     end
   end
 end
