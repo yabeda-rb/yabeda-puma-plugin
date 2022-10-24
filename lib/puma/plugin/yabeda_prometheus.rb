@@ -65,18 +65,34 @@ Puma::Plugin.create do
       end
     end
 
-    events.on_stopped do
-      unless server&.shutting_down?
-        logger.log "* Stopping #{banner}"
-        server.stop(true)
-      end
-    end
+    # on_stopped and on_restart hooks were added in Puma 5.1 in https://github.com/puma/puma/commit/288a4cf756852a4837c77ee70d7fdcca1edb8e82
+    if events.respond_to?(:on_stopped) && events.respond_to?(:on_restart)
 
-    events.on_restart do
-      logger.log "* Restarting #{banner}"
-      server.stop(true)
-      server, logger = create_server.call
-      server.run
+      events.on_stopped do
+        unless server&.shutting_down?
+          logger.log "* Stopping #{banner}"
+          server.stop(true)
+        end
+      end
+
+      events.on_restart do
+        logger.log "* Restarting #{banner}"
+        server.stop(true)
+        server, logger = create_server.call
+        server.run
+      end
+
+    else
+
+      events.register(:state) do |state|
+        next unless %i[halt restart stop].include?(state)
+
+        metrics.stop(true) unless metrics.shutting_down?
+        next unless state == :restart
+
+        server, logger = create_server.call
+        server.run
+      end
     end
   end
 end
