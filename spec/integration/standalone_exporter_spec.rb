@@ -11,12 +11,15 @@ RSpec.describe "Standalone Prometheus Exporter" do
         -C spec/configs/puma_standalone.rb
         spec/configs/standalone.ru
     ]
+    ENV["TEST_RUNNER_PID"] = Process.pid.to_s
+    proceed = false
+    trap(:USR1) { proceed = true }
     @pid = fork do
       $stdout.reopen("/dev/null", "w")
       $stderr.reopen("/dev/null", "w")
       exec(*cmd)
     end
-    sleep 1
+    Timeout::timeout(10) { until proceed do sleep(0.1) end }
   end
 
   after(:each) do

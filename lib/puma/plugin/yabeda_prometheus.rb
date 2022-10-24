@@ -14,6 +14,11 @@ module Puma
     def prometheus_exporter_url(uri)
       @options[:prometheus_exporter_url] = uri
     end
+
+    def on_prometheus_exporter_boot(&block)
+      @options[:prometheus_exporter_boot_hooks] ||= []
+      @options[:prometheus_exporter_boot_hooks] << block
+    end
   end
 end
 
@@ -33,13 +38,20 @@ Puma::Plugin.create do
 
     create_server = -> {
       app = Yabeda::Prometheus::Exporter.rack_app(Yabeda::Prometheus::Exporter, path: path)
-      server = Puma::Server.new app, events, min_threads: 0, max_threads: 1
+      internal_events = Puma::Events.respond_to?(:null) ? Puma::Events.null : Puma::Events.new
+      server = Puma::Server.new app, internal_events, min_threads: 0, max_threads: 1
       logger = server.respond_to?(:log_writer) ? server.log_writer : events
 
       server.add_tcp_listener host, port
       if server.respond_to?(:min_threads=)
         server.min_threads = 0
         server.max_threads = 1
+      end
+
+      internal_events.register(:state) do |state|
+        next unless state == :running
+        hooks = launcher.options.fetch(:prometheus_exporter_boot_hooks, [])
+        hooks.each(&:call)
       end
 
       [server, logger]

@@ -13,3 +13,7 @@ prometheus_exporter_url "tcp://127.0.0.1:9394/metrics"
 before_fork do
   Yabeda.configure!
 end
+
+on_prometheus_exporter_boot do
+  Process.kill(:USR1, Integer(ENV.fetch("TEST_RUNNER_PID")))
+end
