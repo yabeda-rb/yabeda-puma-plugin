@@ -5,15 +5,18 @@ return if Gem::Version.new(Puma::Const::PUMA_VERSION) < Gem::Version.new("5.1")
 
 RSpec.describe "Standalone Prometheus Exporter" do
   before(:each) do
-    cmd = <<~EOF
-      bundle exec puma \
-        -b tcp://127.0.0.1:9222 \
-        -C spec/configs/puma_standalone.rb \
+    cmd = %w[
+      bundle exec puma
+        -b tcp://127.0.0.1:9222
+        -C spec/configs/puma_standalone.rb
         spec/configs/standalone.ru
-    EOF
-    @io = IO.popen cmd, err: [:child, :out]
-    @pid = @io.pid
-    sleep 0.5
+    ]
+    @pid = fork do
+      $stdout.reopen("/dev/null", "w")
+      $stderr.reopen("/dev/null", "w")
+      exec(*cmd)
+    end
+    sleep 1
   end
 
   after(:each) do
