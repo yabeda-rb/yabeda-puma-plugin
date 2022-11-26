@@ -33,7 +33,7 @@ Puma::Plugin.create do
     path = ENV.fetch('PROMETHEUS_EXPORTER_PATH', uri.path)
 
     server = nil
-    logger = events
+    logger = nil
     banner = "Yabeda Prometheus metrics exporter on http://#{host}:#{port}#{path}"
 
     create_server = -> {
@@ -69,7 +69,7 @@ Puma::Plugin.create do
     if events.respond_to?(:on_stopped) && events.respond_to?(:on_restart)
 
       events.on_stopped do
-        unless server&.shutting_down?
+        if server && !server.shutting_down?
           logger.log "* Stopping #{banner}"
           server.stop(true)
         end
