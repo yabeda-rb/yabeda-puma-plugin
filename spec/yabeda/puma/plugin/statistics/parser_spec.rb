@@ -14,11 +14,11 @@ RSpec.describe Yabeda::Puma::Plugin::Statistics::Parser do
           "worker_status"=>[
             {"pid"=>13, "index"=>0, "phase"=>0, "booted"=>true, "last_checkin"=>"2019-03-31T13:04:28Z",
              "last_status"=>{
-              "backlog"=>0, "running"=>5, "pool_capacity"=>5, "max_threads"=>5
+              "backlog"=>0, "running"=>5, "pool_capacity"=>5, "max_threads"=>5, "requests_count" => 5,
             }},
             {"pid"=>17, "index"=>1, "phase"=>0, "booted"=>true, "last_checkin"=>"2019-03-31T13:04:28Z",
              "last_status"=>{
-              "backlog"=>0, "running"=>5, "pool_capacity"=>5, "max_threads"=>5
+              "backlog"=>0, "running"=>5, "pool_capacity"=>5, "max_threads"=>5, "requests_count" => 5,
             }
             }
           ]
@@ -36,11 +36,13 @@ RSpec.describe Yabeda::Puma::Plugin::Statistics::Parser do
             { name: 'running', labels: {index: 0}, value: 5 },
             { name: 'pool_capacity', labels: {index: 0}, value: 5 },
             { name: 'max_threads', labels: {index: 0}, value: 5 },
+            { name: 'requests_count', labels: {index: 0}, value: 5},
 
             { name: 'backlog', labels: {index: 1}, value: 0 },
             { name: 'running', labels: {index: 1}, value: 5 },
             { name: 'pool_capacity', labels: {index: 1}, value: 5 },
-            { name: 'max_threads', labels: {index: 1}, value: 5 }
+            { name: 'max_threads', labels: {index: 1}, value: 5 },
+            { name: 'requests_count', labels: {index: 1}, value: 5},
           ]
         )
       end

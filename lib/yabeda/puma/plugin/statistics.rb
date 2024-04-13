@@ -2,7 +2,7 @@ module Yabeda
   module Puma
     module Plugin
       module Statistics
-        METRICS = [:backlog, :running, :pool_capacity, :max_threads]
+        METRICS = [:backlog, :running, :pool_capacity, :max_threads, :requests_count]
         CLUSTERED_METRICS = [:booted_workers, :old_workers, :workers]
       end
     end
