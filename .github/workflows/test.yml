@@ -18,36 +18,21 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - ruby: "3.3"
+            puma: "6"
+          - ruby: "3.2"
+            puma: "6"
           - ruby: "3.1"
             puma: "6"
           - ruby: "3.0"
             puma: "5"
           - ruby: "2.7"
-            puma: "5"
-          - ruby: "2.6"
             puma: "4"
-          - ruby: "2.5"
-            puma: "4"
-    container:
-      image: ruby:${{ matrix.ruby }}
-      env:
-        CI: true
-        PUMA_VERSION: ${{ matrix.puma }}
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/cache@v3
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
         with:
-          path: vendor/bundle
-          key: bundle-${{ matrix.ruby }}-${{ hashFiles('**/*.gemspec') }}-${{ hashFiles('**/Gemfile') }}
-          restore-keys: |
-            bundle-${{ matrix.ruby }}-${{ hashFiles('**/*.gemspec') }}-${{ hashFiles('**/Gemfile') }}
-            bundle-${{ matrix.ruby }}-
-      - name: Upgrade Bundler to 2.0 (for older Rubies)
-        run: gem install bundler -v '~> 2.0'
-      - name: Bundle install
-        run: |
-          bundle config path vendor/bundle
-          bundle install
-          bundle update
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
       - name: Run RSpec
         run: bundle exec rspec
