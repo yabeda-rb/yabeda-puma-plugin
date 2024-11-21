@@ -1,15 +1,15 @@
-require "net/http"
-require "timeout"
+require 'net/http'
+require 'timeout'
 require 'tempfile'
-require "puma"
-require "puma/events"
-require "puma/detect"
-require "puma/cli"
+require 'puma'
+require 'puma/events'
+require 'puma/detect'
+require 'puma/cli'
 require 'rack'
 
 RSpec.describe Yabeda::Puma::Plugin do
   def next_port(incr = 1)
-    @next_port = 9000 if @next_port == nil
+    @next_port = 9000 if @next_port.nil?
     @next_port += incr
   end
 
@@ -23,7 +23,7 @@ RSpec.describe Yabeda::Puma::Plugin do
       @events = Puma::Events.strings
     end
 
-    @events.on_booted { @ready << "!" }
+    @events.on_booted { @ready << '!' }
   end
 
   after(:each) do
@@ -38,9 +38,9 @@ RSpec.describe Yabeda::Puma::Plugin do
   describe '/metrics' do
     let(:port) { next_port }
     it do
-      cli = Puma::CLI.new ["-b", "tcp://127.0.0.1:#{port}",
-                           "-C", "spec/configs/puma.rb",
-                           "spec/configs/lobster.ru"], *[@log_writer, @events].compact
+      cli = Puma::CLI.new ['-b', "tcp://127.0.0.1:#{port}",
+                           '-C', 'spec/configs/puma.rb',
+                           'spec/configs/lobster.ru'], *[@log_writer, @events].compact
 
       t = Thread.new do
         Thread.current.abort_on_exception = true
@@ -58,14 +58,16 @@ RSpec.describe Yabeda::Puma::Plugin do
         http.request request
       end
 
-       expect(response.body).to match("puma_backlog\\\{index=\"\\\d+\\\"\\\} \\\d+")
-       expect(response.body).to match("puma_running\\\{index=\"\\\d+\\\"\\\} \\\d+")
-       expect(response.body).to match("puma_pool_capacity\\\{index=\"\\\d+\\\"\\\} \\\d+")
-       expect(response.body).to match("puma_max_threads\\\{index=\"\\\d+\\\"\\\} \\\d+")
+      expect(response.body).to match("puma_backlog\\\{index=\"\\\d+\\\"\\\} \\\d+")
+      expect(response.body).to match("puma_running\\\{index=\"\\\d+\\\"\\\} \\\d+")
+      expect(response.body).to match("puma_pool_capacity\\\{index=\"\\\d+\\\"\\\} \\\d+")
+      expect(response.body).to match("puma_max_threads\\\{index=\"\\\d+\\\"\\\} \\\d+")
+      expect(response.body).to match("requests_count\\\{index=\"\\\d+\\\"\\\} \\\d+")
+      expect(response.body).to match("requests_wait_time\\\{index=\"\\\d+\\\"\\\} \\\d+")
 
-       expect(response.body).to include("puma_workers 2")
-       expect(response.body).to include("puma_booted_workers 2")
-       expect(response.body).to include("puma_old_workers 0")
+      expect(response.body).to include('puma_workers 2')
+      expect(response.body).to include('puma_booted_workers 2')
+      expect(response.body).to include('puma_old_workers 0')
     end
   end
 end
