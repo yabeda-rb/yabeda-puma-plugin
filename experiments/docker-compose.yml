@@ -1,0 +1,84 @@
+x-app-resources: &x-app-resources
+  deploy:
+    resources:
+      reservations:
+        cpus: '1'
+        memory: 512M
+      limits:
+        cpus: '1'
+        memory: 512M
+
+x-app-service-template: &ruby-app
+  image: ruby:3.3
+  environment:
+    HISTFILE: /app/tmp/.bash_history
+    BUNDLE_PATH: /usr/local/bundle
+    BUNDLE_CONFIG: /app/.bundle/config
+    prometheus_multiproc_dir: /tmp
+  stdin_open: true
+  tty: true
+  working_dir: /app
+#  tmpfs:
+#    - /tmp
+
+services:
+  app:
+    <<:
+      - *ruby-app
+      - *x-app-resources
+    command: bundle exec puma -t 16 -w 4 -C puma.rb
+    volumes:
+      - bundler_data:/usr/local/bundle
+      - .:/app:cached
+      - ..:/yabeda-puma-plugin
+
+  k6:
+    image: grafana/k6
+    command: run /app/k6.js
+    profiles: [manual-run]
+    volumes:
+      - .:/app:cached
+    sysctls:
+      - net.ipv4.tcp_tw_reuse=1
+
+  prometheus:
+    image: prom/prometheus:v2.17.1
+    container_name: prometheus
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+    expose:
+      - 9090
+    depends_on:
+     - app
+
+  grafana:
+    image: grafana/grafana:11.2.2-security-01
+    container_name: grafana
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=password
+      - GF_USERS_ALLOW_SIGN_UP=false
+    restart: unless-stopped
+    expose:
+      - 3000
+    ports:
+     - "3000:3000"
+    depends_on:
+     - prometheus
+
+volumes:
+  bundler_data:
+  prometheus_data:
+  grafana_data:

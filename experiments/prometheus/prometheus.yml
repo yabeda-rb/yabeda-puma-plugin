@@ -1,0 +1,19 @@
+global:
+  scrape_interval:     5s
+  evaluation_interval: 5s
+
+  # Attach these labels to any time series or alerts when communicating with
+  # external systems (federation, remote storage, Alertmanager).
+  external_labels:
+      monitor: 'docker-host-alpha'
+
+# Load and evaluate rules in this file every 'evaluation_interval' seconds.
+rule_files:
+  - "alert.rules"
+
+# A scrape configuration containing exactly one endpoint to scrape.
+scrape_configs:
+  - job_name: 'client'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['app:9394']
