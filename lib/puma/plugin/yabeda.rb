@@ -20,6 +20,7 @@ Puma::Plugin.create do
       gauge :busy_threads, tags: %i[index], comment: 'Number of busy worker threads', aggregation: :most_recent
       gauge :pool_capacity, tags: %i[index], comment: 'Number of allocatable worker threads', aggregation: :most_recent
       gauge :max_threads, tags: %i[index], comment: 'Maximum number of worker threads', aggregation: :most_recent
+      gauge :requests_count, tags: %i[index], comment: 'Number of requests this worker has served since starting', aggregation: :most_recent
 
       if clustered
         gauge :workers, comment: 'Number of configured workers', aggregation: :most_recent
@@ -38,4 +39,3 @@ Puma::Plugin.create do
     end
   end
 end
-

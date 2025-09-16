@@ -20,6 +20,7 @@ Segmented by the worker (index of the worker):
  - `puma_busy_threads` - the number of busy threads (`running threads` - `how many threads are waiting to receive work` + `how many requests are waiting for a thread to pick them up`)
  - `puma_max_threads` - preconfigured maximum number of worker threads
  - `puma_backlog` - the number of backlog threads, the number of connections in that worker's "todo" set waiting for a worker thread.
+ - `puma_requests_count` - the number of requests a worker has served since starting.
 
 ## Installation
 
