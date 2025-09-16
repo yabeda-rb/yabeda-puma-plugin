@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 0.8.0 - 2025-09-16
+
+### Added
+
+ - Puma 7.x support. [@phallstrom][] in [#36](https://github.com/yabeda-rb/yabeda-puma-plugin/pull/36)
+ - `requests_count` metric [@indiebrain][] in [#31](https://github.com/yabeda-rb/yabeda-puma-plugin/pull/31)
+ - `busy_threads` metric [@jbockler][] in [#35](https://github.com/yabeda-rb/yabeda-puma-plugin/pull/35)
+
 ## 0.7.1 - 2022-11-28
 
 ### Fixed
@@ -65,3 +73,6 @@ Initial release with basic metrics collection. [@dsalahutdinov]
 [@Neznauy]: https://github.com/Neznauy "Aleksandr Shlyakov"
 [@Envek]: https://github.com/Envek "Andrey Novikov"
 [@dsalahutdinov]: https://github.com/dsalahutdinov "Dmitry Salahutdinov"
+[@indiebrain]: https://github.com/indiebrain "Aaron Kuehler"
+[@jbockler]: https://github.com/jbockler "Josch Bockler"
+[@phallstrom]: https://github.com/phallstrom "Philip Hallstrom"
