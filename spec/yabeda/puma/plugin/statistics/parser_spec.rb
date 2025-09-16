@@ -14,11 +14,11 @@ RSpec.describe Yabeda::Puma::Plugin::Statistics::Parser do
           "worker_status"=>[
             {"pid"=>13, "index"=>0, "phase"=>0, "booted"=>true, "last_checkin"=>"2019-03-31T13:04:28Z",
              "last_status"=>{
-              "backlog"=>0, "running"=>5, "pool_capacity"=>5, "max_threads"=>5, "busy_threads"=>4, "requests_count" => 5,
+              "backlog"=>0, "running"=>5, "pool_capacity"=>5, "max_threads"=>5, "busy_threads"=>4, "requests_count"=>5,
             }},
             {"pid"=>17, "index"=>1, "phase"=>0, "booted"=>true, "last_checkin"=>"2019-03-31T13:04:28Z",
              "last_status"=>{
-              "backlog"=>0, "running"=>5, "pool_capacity"=>5, "max_threads"=>5, "busy_threads"=>4", requests_count" => 5,
+              "backlog"=>0, "running"=>5, "pool_capacity"=>5, "max_threads"=>5, "busy_threads"=>4, "requests_count"=>5,
             }
             }
           ]
