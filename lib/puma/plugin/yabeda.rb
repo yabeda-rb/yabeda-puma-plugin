@@ -17,6 +17,7 @@ Puma::Plugin.create do
 
       gauge :backlog, tags: %i[index], comment: 'Number of established but unaccepted connections in the backlog', aggregation: :most_recent
       gauge :running, tags: %i[index], comment: 'Number of running worker threads', aggregation: :most_recent
+      gauge :busy_threads, tags: %i[index], comment: 'Number of busy worker threads', aggregation: :most_recent
       gauge :pool_capacity, tags: %i[index], comment: 'Number of allocatable worker threads', aggregation: :most_recent
       gauge :max_threads, tags: %i[index], comment: 'Maximum number of worker threads', aggregation: :most_recent
 
