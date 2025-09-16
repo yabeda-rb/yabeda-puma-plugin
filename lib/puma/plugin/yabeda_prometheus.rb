@@ -8,6 +8,7 @@ end
 
 require 'uri'
 require 'rack'
+require 'logger'
 
 module Puma
   class DSL
@@ -57,7 +58,9 @@ Puma::Plugin.create do
       [server, logger]
     }
 
-    events.on_booted do
+    # after_booted replaces on_booted in Puma 7.0.0
+    after_booted = events.respond_to?(:after_booted) ? :after_booted : :on_booted
+    events.public_send(after_booted) do
       unless server&.running
         server, logger = create_server.call
         logger.log "* Starting #{banner}"
@@ -66,16 +69,21 @@ Puma::Plugin.create do
     end
 
     # on_stopped and on_restart hooks were added in Puma 5.1 in https://github.com/puma/puma/commit/288a4cf756852a4837c77ee70d7fdcca1edb8e82
-    if events.respond_to?(:on_stopped) && events.respond_to?(:on_restart)
+    # after_stopped and before_restart were added in Puma 7.0.0
+    if (events.respond_to?(:after_stopped) && events.respond_to?(:before_restart)) ||
+      events.respond_to?(:on_stopped) && events.respond_to?(:on_restart)
 
-      events.on_stopped do
+      after_stopped = events.respond_to?(:after_stopped) ? :after_stopped : :on_stopped
+      before_restart = events.respond_to?(:before_restart) ? :before_restart : :on_restart
+
+      events.public_send(after_stopped) do
         if server && !server.shutting_down?
           logger.log "* Stopping #{banner}"
           server.stop(true)
         end
       end
 
-      events.on_restart do
+      events.public_send(before_restart) do
         logger.log "* Restarting #{banner}"
         server.stop(true)
         server, logger = create_server.call

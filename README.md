@@ -17,6 +17,7 @@ Works as the Puma plugin and provides following metrics:
 Segmented by the worker (index of the worker):
  - `puma_pool_capacity` - the capacity of each worker: the number of requests that the server is capable of taking right now. More details are [here](https://github.com/puma/puma/blob/0f8b10737e36fc24cdd572f76a739659b5fad9cb/lib/puma/server.rb#L167).
  - `puma_running` - the number of running threads (spawned threads) for any puma worker
+ - `puma_busy_threads` - the number of busy threads (`running threads` - `how many threads are waiting to receive work` + `how many requests are waiting for a thread to pick them up`)
  - `puma_max_threads` - preconfigured maximum number of worker threads
  - `puma_backlog` - the number of backlog threads, the number of connections in that worker's "todo" set waiting for a worker thread.
  - `puma_requests_count` - the number of requests a worker has served since starting.

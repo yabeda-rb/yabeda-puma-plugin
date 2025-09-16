@@ -14,10 +14,16 @@ jobs:
     # Skip running tests for local pull requests (use push event instead), run only for foreign ones
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.owner.login != github.event.pull_request.base.repo.owner.login
     runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.optional || false }}
     strategy:
       fail-fast: false
       matrix:
         include:
+          - ruby: head
+            puma: "7"
+            optional: true
+          - ruby: "3.4"
+            puma: "7"
           - ruby: "3.3"
             puma: "6"
           - ruby: "3.2"
@@ -28,6 +34,8 @@ jobs:
             puma: "5"
           - ruby: "2.7"
             puma: "4"
+    env:
+      PUMA_VERSION: ${{ matrix.puma }}
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
