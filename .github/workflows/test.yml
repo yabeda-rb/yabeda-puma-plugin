@@ -19,6 +19,8 @@ jobs:
       matrix:
         include:
           - ruby: "3.3"
+            puma: "7"
+          - ruby: "3.3"
             puma: "6"
           - ruby: "3.2"
             puma: "6"
@@ -28,6 +30,8 @@ jobs:
             puma: "5"
           - ruby: "2.7"
             puma: "4"
+    env:
+      PUMA_VERSION: ${{ matrix.puma }}
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
@@ -35,4 +39,4 @@ jobs:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
       - name: Run RSpec
-        run: bundle exec rspec
+        run: bundle install && bundle exec rspec

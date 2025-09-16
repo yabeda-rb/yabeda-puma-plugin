@@ -23,7 +23,8 @@ RSpec.describe Yabeda::Puma::Plugin do
       @events = Puma::Events.strings
     end
 
-    @events.on_booted { @ready << "!" }
+    after_booted = @events.respond_to?(:after_booted) ? :after_booted : :on_booted
+    @events.public_send(after_booted) { @ready << "!" }
   end
 
   after(:each) do
