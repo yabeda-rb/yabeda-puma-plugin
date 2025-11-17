@@ -103,7 +103,7 @@ Or by environment variables `PROMETHEUS_EXPORTER_URL`, `PROMETHEUS_EXPORTER_BIND
 
 ###### Silencing logs
 
-You can silence the Prometheus exporter's logs via an environment variable:
+You can silence the Prometheus exporter's logs:
 
 ```ruby
 # config/puma.rb
