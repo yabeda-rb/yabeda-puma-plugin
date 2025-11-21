@@ -16,6 +16,10 @@ module Puma
       @options[:prometheus_exporter_url] = uri
     end
 
+    def prometheus_silence_logger(silence)
+      @options[:prometheus_silence_logger] = silence
+    end
+
     def on_prometheus_exporter_boot(&block)
       @options[:prometheus_exporter_boot_hooks] ||= []
       @options[:prometheus_exporter_boot_hooks] << block
@@ -32,6 +36,8 @@ Puma::Plugin.create do
     host = ENV.fetch('PROMETHEUS_EXPORTER_BIND', uri.host)
     port = Integer(ENV.fetch('PROMETHEUS_EXPORTER_PORT', uri.port))
     path = ENV.fetch('PROMETHEUS_EXPORTER_PATH', uri.path)
+    silence_logger = launcher.options.fetch(:prometheus_silence_logger, false)
+    silence_logger = ENV.fetch('PROMETHEUS_EXPORTER_SILENT', silence_logger)
 
     server = nil
     logger = nil
@@ -40,7 +46,9 @@ Puma::Plugin.create do
     create_server = -> {
       app = Yabeda::Prometheus::Exporter.rack_app(Yabeda::Prometheus::Exporter, path: path)
       internal_events = Puma::Events.respond_to?(:null) ? Puma::Events.null : Puma::Events.new
-      server = Puma::Server.new app, internal_events, min_threads: 0, max_threads: 1
+      log_writer = silence_logger ? Puma::LogWriter.null : Puma::LogWriter.stdio
+
+      server = Puma::Server.new app, internal_events, min_threads: 0, max_threads: 1, log_writer: log_writer
       logger = server.respond_to?(:log_writer) ? server.log_writer : events
 
       server.add_tcp_listener host, port

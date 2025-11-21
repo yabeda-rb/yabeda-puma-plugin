@@ -101,6 +101,20 @@ prometheus_exporter_url "tcp://127.0.0.1:9395/shmetrics"
 
 Or by environment variables `PROMETHEUS_EXPORTER_URL`, `PROMETHEUS_EXPORTER_BIND`, `PROMETHEUS_EXPORTER_PORT`, and `PROMETHEUS_EXPORTER_PATH` (takes precedence over configuration option).
 
+###### Silencing logs
+
+You can silence the Prometheus exporter's logs:
+
+```ruby
+# config/puma.rb
+prometheus_silence_logger true
+```
+
+or
+
+```sh
+PROMETHEUS_EXPORTER_SILENT=true
+```
 
 ## Details
 
