@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 0.9.0 - 2025-11-21
+
+### Added
+
+ - Ability to silence prometheus exporter logs. [@lewispb][] in [#37](https://github.com/yabeda-rb/yabeda-puma-plugin/pull/37)
+
 ## 0.8.0 - 2025-09-16
 
 ### Added
@@ -76,3 +82,4 @@ Initial release with basic metrics collection. [@dsalahutdinov]
 [@indiebrain]: https://github.com/indiebrain "Aaron Kuehler"
 [@jbockler]: https://github.com/jbockler "Josch Bockler"
 [@phallstrom]: https://github.com/phallstrom "Philip Hallstrom"
+[@lewispb]: https://github.com/lewispb "Lewis Buckley"
