@@ -20,8 +20,10 @@ jobs:
       matrix:
         include:
           - ruby: head
-            puma: "7"
+            puma: "8"
             optional: true
+          - ruby: "4.0"
+            puma: "8"
           - ruby: "3.4"
             puma: "7"
           - ruby: "3.3"
@@ -30,10 +32,6 @@ jobs:
             puma: "6"
           - ruby: "3.1"
             puma: "6"
-          - ruby: "3.0"
-            puma: "5"
-          - ruby: "2.7"
-            puma: "4"
     env:
       PUMA_VERSION: ${{ matrix.puma }}
     steps:
