@@ -16,6 +16,7 @@ Gem::Specification.new do |spec|
 
   spec.metadata = {
     "changelog_uri" => "https://github.com/yabeda-rb/yabeda-puma-plugin/blob/master/CHANGELOG.md",
+    "rubygems_mfa_required" => "true",
   }
 
   spec.files         = Dir.chdir(File.expand_path('..', __FILE__)) do
